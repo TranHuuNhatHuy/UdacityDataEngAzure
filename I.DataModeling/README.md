@@ -1,6 +1,6 @@
 # Project: Data Modeling with Apache Cassandra
 
-(scroll down for solution at section II)
+(scroll down for solution at [section II](https://github.com/TranHuuNhatHuy/UdacityDataEngAzure/blob/main/I.DataModeling/README.md#ii-solutions))
 
 ## I. Project Overview
 
@@ -74,3 +74,12 @@ The ETL pipeline to achieve the project targets includes:
     1. Create a table specific for that query with `CREATE` query.
     2. Populate that table with proper schema with `INSERT` query.
     3. Test by running `SELECT` statements to see if the data is properly loaded and used after running those 2 queries on the table.
+  
+### 3. Criteria
+
+1. Student creates the correct Apache Cassandra tables for each of the three queries. The `CREATE TABLE` statement should include the appropriate table.
+2. Student demonstrates good understanding of data modeling by generating correct `SELECT` statements to generate the result being asked for in the question. The `SELECT` statement should `NOT` use `ALLOW FILTERING` to generate the results.
+3. Student should use table names that reflect the query and the result it will generate. Table names should include alphanumeric characters and underscores, and table names must start with a letter.
+4. The sequence in which columns appear should reflect how the data is partitioned and the order of the data within the partitions.
+5. The combination of the `PARTITION KEY` alone or with the addition of `CLUSTERING COLUMNS` should be used appropriately to uniquely identify each row.
+6. The notebook should include student's thoughts and solutions in comments. Code should be organized well into the different queries. Any in-line comments that were clearly part of the project instructions should be removed so the notebook provides a professional look.
