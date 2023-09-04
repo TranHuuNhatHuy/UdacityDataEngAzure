@@ -55,4 +55,22 @@ The project template includes one Jupyter Notebook file, in which:
 
 ### 1. Modeling NoSQL database or Apache Cassandra database
 
+Everything is quite clear in the Project Template notebook already, both the given template and my code, so allow me to cut this part off.
+
 ### 2. Build ETL Pipeline
+
+The ETL pipeline to achieve the project targets includes:
+
+1. Copy the data from `event_data/2018-*.csv` files and merge all to a single denormalized dataset `event_datafile_new.csv`, whose structure is shown in the image below.
+
+<img src="./assets/image_event_datafile_new.jpg">
+
+2. From this CSV file, 3 tables will be created and populated with data from it, to specifically and optimally serve 3 queries of:
+    a. `artist`, `song title` and `song's length` in the music app history that was heard during `sessionId = 338`, and `itemInSession = 4`.
+    b. `artist`, `song` (sorted by `itemInSession`) and user (`firstName` and `lastName`) for `userid = 10`, `sessionid = 182`.
+    c. User name (`firstName` and `lastName`) in my music app history who listened to the song "All Hands Against His Own".
+
+3. For each table and query above, based on the notebook template, I:
+    1. Create a table specific for that query with `CREATE` query.
+    2. Populate that table with proper schema with `INSERT` query.
+    3. Test by running `SELECT` statements to see if the data is properly loaded and used after running those 2 queries on the table.
