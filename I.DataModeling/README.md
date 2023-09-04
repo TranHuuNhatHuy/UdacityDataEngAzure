@@ -1,6 +1,11 @@
 # Project: Data Modeling with Apache Cassandra
 
-(scroll down for solution at [section II](https://github.com/TranHuuNhatHuy/UdacityDataEngAzure/blob/main/I.DataModeling/README.md#ii-solutions))
+#### Scroll down for solution at [section II](https://github.com/TranHuuNhatHuy/UdacityDataEngAzure/blob/main/I.DataModeling/README.md#ii-solutions)
+
+#### A little reminder
+
+- My work is in the notebook `Project_1B_ Project_Template.ipynb`.
+- Before running the notebook, make sure to start Cassandra server, for me it's `brew services start cassandra` since I use Cassandra with Homebrew on MacOS.
 
 ## I. Project Overview
 
