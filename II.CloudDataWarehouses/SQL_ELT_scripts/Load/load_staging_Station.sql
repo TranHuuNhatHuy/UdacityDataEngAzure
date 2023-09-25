@@ -1,6 +1,10 @@
 USE azuredataeng_udacity;
 
--- Create external table for staging Station data
+-- Drop table if exists
+IF OBJECT_ID('dbo.stagingStation') IS NOT NULL
+    DROP EXTERNAL TABLE dbo.stagingStation
+
+-- Create external staging table for Station data
 CREATE EXTERNAL TABLE dbo.stagingStation (
     [station_id] NVARCHAR(1000),
     [name] NVARCHAR(1000),
@@ -13,6 +17,6 @@ CREATE EXTERNAL TABLE dbo.stagingStation (
 )
 GO
 
--- Fetch first 10 rows from staging table and check them out
+-- Check
 SELECT TOP 10 * FROM dbo.stagingStation
 GO

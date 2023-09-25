@@ -1,6 +1,10 @@
 USE azuredataeng_udacity;
 
--- Create external table for staging Payment data
+-- Drop table if exists
+IF OBJECT_ID('dbo.stagingPayment') IS NOT NULL
+    DROP EXTERNAL TABLE dbo.stagingPayment
+
+-- Create external staging table for Payment data
 CREATE EXTERNAL TABLE dbo.stagingPayment (
     [payment_id] BIGINT,
     [date] VARCHAR(100),
@@ -13,6 +17,6 @@ CREATE EXTERNAL TABLE dbo.stagingPayment (
 )
 GO
 
--- Fetch first 10 rows from staging table and check them out
+-- Check
 SELECT TOP 10 * FROM dbo.stagingPayment
 GO

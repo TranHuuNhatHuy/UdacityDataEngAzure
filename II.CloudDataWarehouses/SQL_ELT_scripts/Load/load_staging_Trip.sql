@@ -1,6 +1,10 @@
 USE azuredataeng_udacity;
 
--- Create external table for staging Trip data
+-- Drop table if exists
+IF OBJECT_ID('dbo.stagingTrip') IS NOT NULL
+    DROP EXTERNAL TABLE dbo.stagingTrip
+
+-- Create external staging table for Trip data
 CREATE EXTERNAL TABLE dbo.stagingTrip (
     [trip_id] NVARCHAR(1000),
     [rideable_type] NVARCHAR(1000),
@@ -16,6 +20,6 @@ CREATE EXTERNAL TABLE dbo.stagingTrip (
 )
 GO
 
--- Fetch first 10 rows from staging table and check them out
+-- Check
 SELECT TOP 10 * FROM dbo.stagingTrip
 GO

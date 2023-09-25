@@ -70,17 +70,16 @@ Here we have 2 fact tables and 2 dimension tables, which are:
 
 - (Fact) Trip:
     + `trip_id` : surrogate primary key of the trip, string format.
-    + `payment_id` : secondary key, representing payment corresponding to this trip, int format.
     + `trip_date` : date of the start of the trip, date format of `yyyy-mm-dd`.
     + `trip_time` : time of the start of the trip, time format of `hh:mm:ss`.
-    + `started_at` : date and time of the start of the trip, datetime format of `2019-05-01 00:00:00.0000000`.
-    + `ended_at` : date and time of the end of the trip, datetime format of `2019-05-01 00:00:00.0000000`.
+    + `started_at` : date and time of the start of the trip, datetime format of `yyyy-mm-dd hh:mm:ss`.
+    + `ended_at` : date and time of the end of the trip, datetime format of `yyyy-mm-dd hh:mm:ss`.
     + `rider_id` : secondary key, representing ID of rider, int format.
     + `rideable_type` : type of the trip's transportation, string format.
     + `rider_age` : age of the rider, int format.
     + `start_station_id` : ID of station where the trip starts, string format.
     + `end_station_id` : ID of station where the trip ends, string format.
-    + `duration` : total time length of the trip, in hours, int format.
+    + `duration` : total time length of the trip, in SECONDS, bigint format.
 
 ![Fact Trip table](./assets/starSchema_Trip.png)
 
@@ -102,17 +101,18 @@ Here we have 2 fact tables and 2 dimension tables, which are:
     + `latitude` : latitude of the station, float format.
     + `longitude` : longitude of the station, float format.
 
+![Dim Station table](./assets/starSchema_Station.png)
+
 - (Dimension) Date:
-    + `date_id` : basically the date in `yyyy-mm-dd` format.
+    + `date_id` : basically the date in `yyyy-mm-dd` format, from `2013-01-01` to `2022-12-31`.
     + `day` : calendar day, int format, `1~31`.
     + `month` : calendar month, int format, `1~12`.
     + `quarter` : yearly quarter, int format, `1~4` for Q1 to Q4.
     + `year` : calendar year, int format, `xxxx`.
     + `day_of_week` : weekday, int format, `1~7` for Sunday to Saturday.
-    + `day_if_year` : yearly day, int format, `1~365` (sometimes `366`).
+    + `day_of_year` : yearly day, int format, `1~365` (sometimes `366`).
 
-![Dim Station table](./assets/starSchema_Station.png)
-
+![Dim Date table](./assets/starSchema_Date.png)
   
 ### Task 3. Create the data in PostgreSQL
 
@@ -129,6 +129,8 @@ The steps follow:
 1. Locate the Azure Synapse workspace.
 2. Use the ingest wizard to create a one-time pipeline that ingests the data from PostgreSQL into Azure Blob Storage.
 3. Verify that all four tables are represented as delimited text files in Blob Storage, ready for loading into the data warehouse.
+
+For the Date dimension table, as we do not have original raw data, I decided to create one using Excel and pretty simple Excel functions. The schema follows Date dimension schema above, and the raw data file (CSV) is stored at `aux_Files/publicdate.csv`.
 
 ![Extract PostgreSQL data into Blob Storage](./assets/Task4.ExtractDataPostgreSQL.png)
 
