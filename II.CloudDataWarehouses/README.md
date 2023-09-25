@@ -1,6 +1,12 @@
 # Project: Building an Azure Data Warehouse for Bike Share Data Analytics
 
-#### Scroll down for solution at [section II](https://github.com/TranHuuNhatHuy/UdacityDataEngAzure/blob/main/I.DataModeling/README.md#ii-solutions)
+#### Repo structure
+
+- **assets** : storing images used in README.MD, along with screenshots showing proof of task completion, including EXTRACT part.
+- **SQL_ELT_scripts** : storing SQL scripts used for LOAD and TRANSFORM parts, in `Load` and `Transform` subfolders respectively.
+- **StarSchemaPDF.pdf** : PDF file containing designed star schema.
+
+#### (Scroll down for solution at section II)
 
 ## I. Project Overview
 
