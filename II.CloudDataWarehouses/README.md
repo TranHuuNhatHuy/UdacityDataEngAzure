@@ -5,6 +5,7 @@
 - **assets** : storing images used in README.MD, along with screenshots showing proof of task completion, including EXTRACT part.
 - **SQL_ELT_scripts** : storing SQL scripts used for LOAD and TRANSFORM parts, in `Load` and `Transform` subfolders respectively.
 - **StarSchemaPDF.pdf** : PDF file containing designed star schema.
+- **aux_Files** : folder containing auxiliary file of `publicdate.csv`, which is not included in original dataset (in other word, I created it myself), and is necessary for LOAD part.
 
 #### (Scroll down for solution at section II)
 
@@ -136,22 +137,26 @@ For the Date dimension table, as we do not have original raw data, I decided to 
 
 ### Task 5. LOAD the data into external tables in the data warehouse
 
-Now we have 4 delimited text files (CSV). In order to load them from Blob Storage into external staging tables in data warehouse:
+Now we have 5 delimited text files (CSV). In order to load them from Blob Storage into external staging tables in data warehouse:
 
 1. Secure a connection from Azure Synapse Workspace to the Blob Storage. The script used for this is stored at `./SQL_ELT_scripts/Load/init_database_connection.sql`.
 2. For each of the CSV, use an SQL script with `CREATE EXTERNAL TABLE` to generate external table in serverless SQL pool, with reference to the CSV file in Blob Storage. This external table will serve as staging table for later TRANSFORM stage.
-3. Verify that all 4 external tables are created in serverless SQL pool.
+3. Verify that all 5 external tables are created in serverless SQL pool.
+
+You can see all the SQL scripts in `SQL_ELT_scripts/Load`.
 
 ![LOAD external tables](./assets/Task5.LoadExternalTables.png)
 
 ### Task 6. TRANSFORM the data to the star schema using CETAS
 
-Now we have 4 external staging tables, the final task is to transform them into star schema we designed:
+Now we have 5 external staging tables, the final task is to transform them into star schema we designed:
 
 1. Define for file format.
 2. Define the data source to persist the results.
-3. For each of the 4 tables:
+3. For each of the 5 tables:
     - Use CETAS to export select statement.
     - Query head rows to check the desired output.
+
+You can see all the SQL scripts in `SQL_ELT_scripts/Transform`.
 
 ![TRANSFORM to star schema with CETAS](./assets/Task6.TransformStarSchema.png)
