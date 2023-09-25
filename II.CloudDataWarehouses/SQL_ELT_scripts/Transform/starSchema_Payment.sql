@@ -8,14 +8,8 @@ CREATE EXTERNAL TABLE dbo.fact_Payment WITH (
 ) AS (
     SELECT
         [payment_id],
-        [date],
+        CONVERT(varchar(10), [date], 111) AS [date],
         [amount],
-        DATEPART(day, CONVERT(date, [date])) AS [day],
-        DATEPART(month, CONVERT(date, [date])) AS [month],
-        DATEPART(quarter, CONVERT(date, [date])) AS [quarter],
-        DATEPART(year, CONVERT(date, [date])) AS [year],
-        DATEPART(weekday, CONVERT(date, [date])) AS [day_of_week],
-        DATEPART(dayofyear, CONVERT(date, [date])) AS [day_of_year],
         [rider_id]
     FROM
         dbo.stagingPayment

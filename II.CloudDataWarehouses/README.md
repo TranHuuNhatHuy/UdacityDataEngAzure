@@ -62,22 +62,17 @@ Here we have 2 fact tables and 2 dimension tables, which are:
 
 - (Fact) Payment:
     + `payment_id` : surrogate primary key of the payment, int format.
-    + `date` : date and time of the payment, datetime format of `2019-05-01 00:00:00.0000000`.
+    + `date` : date of the payment, date format of `yyyy-mm-dd`.
     + `amount` : payment amount, float format.
-    + `day` : calendar day, int format, `1~31`.
-    + `month` : calendar month, int format, `1~12`.
-    + `quarter` : yearly quarter, int format, `1~4` for Q1 to Q4.
-    + `year` : calendar year, int format, `xxxx`.
-    + `day_of_week` : weekday, int format, `1~7` for Sunday to Saturday.
-    + `day_if_year` : yearly day, int format, `1~365` (sometimes `366`).
     + `rider_id` : secondary key, representing ID of rider, int format.
 
 ![Fact Payment table](./assets/starSchema_Payment.png)
 
 - (Fact) Trip:
     + `trip_id` : surrogate primary key of the trip, string format.
+    + `payment_id` : secondary key, representing payment corresponding to this trip, int format.
     + `trip_date` : date of the start of the trip, date format of `yyyy-mm-dd`.
-    + `trip_time` : time of the start of the trip, time format of `hh-mm-ss`.
+    + `trip_time` : time of the start of the trip, time format of `hh:mm:ss`.
     + `started_at` : date and time of the start of the trip, datetime format of `2019-05-01 00:00:00.0000000`.
     + `ended_at` : date and time of the end of the trip, datetime format of `2019-05-01 00:00:00.0000000`.
     + `rider_id` : secondary key, representing ID of rider, int format.
@@ -94,9 +89,9 @@ Here we have 2 fact tables and 2 dimension tables, which are:
     + `address` : rider's address, string format.
     + `first` : rider's first name, string format.
     + `last` : rider's last name, string format.
-    + `birthday` : rider's birthday, datetime format of `1989-02-13 00:00:00.0000000`.
-    + `account_start_date` : rider's account start date, datetime format of `1989-02-13 00:00:00.0000000`.
-    + `account_end_date` : rider's account end date, maybe datetime format of ``1989-02-13 00:00:00.0000000` or `NULL` which indicates the acocunt is still active.
+    + `birthday` : rider's birthday, datetime format of `yyyy-mm-dd`.
+    + `account_start_date` : rider's account start date, datetime format of `yyyy-mm-dd`.
+    + `account_end_date` : rider's account end date, maybe datetime format of `yyyy-mm-dd` or `NULL` which indicates the acocunt is still active.
     + `is_member` : status of this rider's account, either `TRUE` or `FALSE`.
 
 ![Dim Rider table](./assets/starSchema_Rider.png)
@@ -106,6 +101,15 @@ Here we have 2 fact tables and 2 dimension tables, which are:
     + `name` : name of the station, string format.
     + `latitude` : latitude of the station, float format.
     + `longitude` : longitude of the station, float format.
+
+- (Dimension) Date:
+    + `date_id` : basically the date in `yyyy-mm-dd` format.
+    + `day` : calendar day, int format, `1~31`.
+    + `month` : calendar month, int format, `1~12`.
+    + `quarter` : yearly quarter, int format, `1~4` for Q1 to Q4.
+    + `year` : calendar year, int format, `xxxx`.
+    + `day_of_week` : weekday, int format, `1~7` for Sunday to Saturday.
+    + `day_if_year` : yearly day, int format, `1~365` (sometimes `366`).
 
 ![Dim Station table](./assets/starSchema_Station.png)
 
