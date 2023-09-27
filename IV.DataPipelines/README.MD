@@ -2,11 +2,10 @@
 
 #### Repo structure
 
+- **ADF_JSONs** : storing all JSON files related to project configurations in ADF.
+- **SQL_scripts/Synapse** : storing Synapse scripts used for ELT process.
 - **assets** : storing images used in README.MD, along with screenshots showing proof of task completions.
 - **data** : project data files provided by Udacity.
-- **notebooks** : storing Python notebooks used for EXTRACT, LOAD and TRANSFORM parts, with corresponding names.
-- **StarSchemaPDF.pdf** : PDF file containing designed star schema.
-- **aux_Files** : folder containing auxiliary file of `publicdate.csv`, which is not included in original dataset (in other word, I created it myself), and is necessary for LOAD part.
 
 #### (Scroll down for solution at section II)
 
