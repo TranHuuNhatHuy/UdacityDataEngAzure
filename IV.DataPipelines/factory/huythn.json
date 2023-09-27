@@ -1,0 +1,17 @@
+{
+	"name": "huythn",
+	"properties": {
+		"globalParameters": {
+			"globalParamFiscalYear": {
+				"type": "int",
+				"value": 2020
+			}
+		}
+	},
+	"location": "japaneast",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "2578755f-c0f3-4d56-9c98-d4891f6b9ee8",
+		"tenantId": "fcaabfb6-abc5-4ce6-9bfa-f075b648552c"
+	}
+}
