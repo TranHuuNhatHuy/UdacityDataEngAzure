@@ -1,0 +1,500 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "huythn"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Pipeline Aggregate Data')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Aggregate Data",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Dataflow Aggregate Data",
+								"type": "DataFlowReference",
+								"parameters": {
+									"dataflow_param_FiscalYear": {
+										"value": "@pipeline().globalParameters.globalParamFiscalYear",
+										"type": "Expression"
+									}
+								},
+								"datasetParameters": {
+									"CurrentDataSQLDB": {},
+									"HistoricalDataLake": {},
+									"SynapsePayrollSummary": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "AzureDataLakeStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "adlsnycpayroll-huythn-lastintial/dirstaging"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-09-27T20:49:07Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Pipeline Load 2021 Payroll into SQLDB')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Load 2021 Payroll to SQLDB",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Load 2021 Payroll to SQLDB",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"SourcePayroll2021": {},
+									"TransactionSQLDB": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-09-27T17:49:34Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Pipeline Load Agency Master to Synapse')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Dataflow Load Agency MD",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Load Agency to SQL Synapse",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"SourceAgencyMaster": {},
+									"SinkPayrollAgency": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "AzureDataLakeStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "adlsnycpayroll-huythn-lastintial/dirstaging"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-09-27T18:47:15Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Pipeline Load All Data into Synapse')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Dataflow Load Emp MD",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Load Employee to SQL Synapse",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"SourceEmpMaster": {},
+									"SinkNYCPayrollEMPMD": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "AzureDataLakeStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "adlsnycpayroll-huythn-lastintial/dirstaging"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "Dataflow Load Agency MD",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Load Agency to SQL Synapse",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"SourceAgencyMaster": {},
+									"SinkPayrollAgency": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "AzureDataLakeStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "adlsnycpayroll-huythn-lastintial/dirstaging"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "dataflow Load Title MD",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Load Title to SQL Synapse",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"SourceTitleMaster": {},
+									"SinkPayrollTitle": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "AzureDataLakeStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "adlsnycpayroll-huythn-lastintial/dirstaging"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "Dataflow load SQLDB to Synapse",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "Dataflow Load Emp MD",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Dataflow Load Agency MD",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "dataflow Load Title MD",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Load 2021 Payroll from SQLDB to Synapse",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"TransactionSQLDB": {},
+									"SinkPayrollData": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "AzureDataLakeStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "adlsnycpayroll-huythn-lastintial/dirstaging"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-09-27T19:34:41Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Pipeline Load Current Payroll Data from SQLDB to Synapse')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Load Payroll SQLDB to Synapse",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Load 2021 Payroll from SQLDB to Synapse",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"TransactionSQLDB": {},
+									"SinkPayrollData": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "AzureDataLakeStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "adlsnycpayroll-huythn-lastintial/dirstaging"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-09-27T18:58:03Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Pipeline Load Employee Master to Synapse')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Dataflow Load Emp MD",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Load Employee to SQL Synapse",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"SourceEmpMaster": {},
+									"SinkNYCPayrollEMPMD": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "AzureDataLakeStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "adlsnycpayroll-huythn-lastintial/dirstaging"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-09-27T18:49:47Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Pipeline Load Title Master to Synapse')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Dataflow Load Title MD",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Load Title to SQL Synapse",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"SourceTitleMaster": {},
+									"SinkPayrollTitle": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "AzureDataLakeStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "adlsnycpayroll-huythn-lastintial/dirstaging"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-09-27T18:49:47Z"
+			},
+			"dependsOn": []
+		}
+	]
+}
